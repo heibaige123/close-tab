@@ -1,4 +1,4 @@
-import { dedupeTabsByNormalizedUrl, getTabDomain } from '@/utils/url';
+import { getTabDomain } from '@/utils/url';
 import { addHistorySession, MAX_HISTORY_SESSIONS, type HistorySession } from '../db/historyDb';
 
 export default defineBackground(() => {
@@ -17,10 +17,8 @@ export default defineBackground(() => {
             domain: getTabDomain(tab.url),
         }));
 
-        const dedupedTabList = dedupeTabsByNormalizedUrl(tabList);
-
         const newSession: HistorySession = {
-            tabs: dedupedTabList,
+            tabs: tabList,
             closedAt: Date.now(),
         };
 
