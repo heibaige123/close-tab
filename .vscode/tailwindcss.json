@@ -1,0 +1,105 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@apply",
+      "description": "Tailwind CSS @apply directive for composing utility classes.",
+      "references": [
+        {
+          "name": "Tailwind CSS @apply",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#apply"
+        }
+      ]
+    },
+    {
+      "name": "@tailwind",
+      "description": "Tailwind CSS directive to inject base, components, and utilities layers.",
+      "references": [
+        {
+          "name": "Tailwind CSS @tailwind",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#tailwind"
+        }
+      ]
+    },
+    {
+      "name": "@layer",
+      "description": "Tailwind CSS directive to place styles into base, components, or utilities layers.",
+      "references": [
+        {
+          "name": "Tailwind CSS @layer",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#layer"
+        }
+      ]
+    },
+    {
+      "name": "@config",
+      "description": "Tailwind CSS directive to load a specific config file.",
+      "references": [
+        {
+          "name": "Tailwind CSS @config",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#config"
+        }
+      ]
+    },
+    {
+      "name": "@theme",
+      "description": "Tailwind CSS directive to define theme values in CSS.",
+      "references": [
+        {
+          "name": "Tailwind CSS @theme",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#theme"
+        }
+      ]
+    },
+    {
+      "name": "@utility",
+      "description": "Tailwind CSS directive to define a custom utility.",
+      "references": [
+        {
+          "name": "Tailwind CSS @utility",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#utility"
+        }
+      ]
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Tailwind CSS directive to define a custom variant.",
+      "references": [
+        {
+          "name": "Tailwind CSS @custom-variant",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#custom-variant"
+        }
+      ]
+    },
+    {
+      "name": "@variant",
+      "description": "Tailwind CSS directive to apply styles under a variant.",
+      "references": [
+        {
+          "name": "Tailwind CSS @variant",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#variant"
+        }
+      ]
+    },
+    {
+      "name": "@responsive",
+      "description": "Tailwind CSS directive to generate responsive variants.",
+      "references": [
+        {
+          "name": "Tailwind CSS @responsive",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#responsive"
+        }
+      ]
+    },
+    {
+      "name": "@screen",
+      "description": "Tailwind CSS directive to target a configured screen size.",
+      "references": [
+        {
+          "name": "Tailwind CSS @screen",
+          "url": "https://tailwindcss.com/docs/functions-and-directives#screen"
+        }
+      ]
+    }
+  ]
+}

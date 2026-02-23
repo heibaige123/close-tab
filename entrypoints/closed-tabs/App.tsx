@@ -52,22 +52,22 @@ export default function App() {
     };
 
     return (
-        <div className="app-shell app-surface">
-            <main className="page-inner">
-                <header className={`page-header ${hasHistory ? 'page-header--actions' : ''}`.trim()}>
+        <div className="p-5 min-h-screen [background:radial-gradient(circle_at_0%_0%,_rgb(239_246_255_/_0.65),_transparent_42%),_radial-gradient(circle_at_100%_100%,_rgb(240_249_255_/_0.7),_transparent_38%),_rgb(248_250_252)]">
+            <main className="mx-auto w-full max-w-4xl">
+                <header className={hasHistory ? 'flex justify-between items-end gap-3 mb-5' : 'mb-5'}>
                     <div>
-                        <h1 className="page-title">已关闭的标签页</h1>
-                        <p className="page-subtitle">{subtitle}</p>
+                        <h1 className="font-semibold text-slate-900 text-2xl tracking-tight">已关闭的标签页</h1>
+                        <p className="mt-1 text-slate-500 text-sm">{subtitle}</p>
                     </div>
                     {hasHistory && (
-                        <div className="header-actions">
-                            <span className="badge">
+                        <div className="flex items-center gap-2">
+                            <span className="bg-white/90 shadow-sm px-3 py-1 border border-slate-200 rounded-full font-medium text-slate-600 text-xs">
                                 共 {history.length} 组
                             </span>
                             <button
                                 type="button"
                                 onClick={handleClearAll}
-                                className="btn btn--danger"
+                                className="bg-white px-2.5 py-1 border border-slate-200 hover:border-red-300 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 font-medium text-slate-600 hover:text-red-700 text-sm transition"
                             >
                                 清空全部记录
                             </button>
@@ -86,7 +86,7 @@ export default function App() {
                         ))}
                     </div>
                 ) : (
-                    <section className="empty-state">
+                    <section className="backdrop-blur-[2px] backdrop-saturate-[1.2] px-6 py-10 border border-slate-200/80 rounded-2xl text-center">
                         <p className="font-medium text-slate-700 text-sm">暂无关闭记录</p>
                         <p className="mt-1 text-slate-500 text-xs">点击扩展图标后，当前标签页会出现在这里</p>
                     </section>
