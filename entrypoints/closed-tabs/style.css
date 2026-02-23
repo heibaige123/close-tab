@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+:root {
+	color-scheme: light;
+}
+
+body {
+	margin: 0;
+}
+
+.app-surface {
+	background:
+		radial-gradient(circle at 0% 0%, rgb(239 246 255 / 0.65), transparent 42%),
+		radial-gradient(circle at 100% 100%, rgb(240 249 255 / 0.7), transparent 38%),
+		rgb(248 250 252);
+}
+
+.session-card,
+.empty-state {
+	backdrop-filter: saturate(1.2) blur(2px);
+}
