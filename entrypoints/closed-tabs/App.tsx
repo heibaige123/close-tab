@@ -1,97 +1,70 @@
-import { useEffect, useState } from 'react';
-import type { HistorySession } from '../../db/historyDb';
-import {
-    deleteAllHistorySessions,
-    deleteHistorySession,
-    getHistorySessions,
-    MAX_HISTORY_SESSIONS,
-    updateHistorySessionTabs,
-} from '../../db/historyDb';
+import { useCallback, useState } from 'react';
+import { useSessionsData } from './hooks/useSessionsData';
+import { VIEW_CONFIG, type ViewMode } from './constants';
+import { EmptyState } from './components/EmptyState';
+import { PageHeader } from './components/PageHeader';
 import { SessionCard } from './components/SessionCard';
+import { SidebarNav } from './components/SidebarNav';
+import { Button } from './components/Button';
 
+/**
+ * 主应用组件
+ * 管理页面布局和视图切换
+ */
 export default function App() {
-    const [history, setHistory] = useState<HistorySession[]>([]);
-    const hasHistory = history.length > 0;
-    const subtitle = hasHistory
-        ? '按会话分组，支持全部还原与逐条管理'
-        : '可快速恢复浏览上下文，也可按条目清理历史';
+  const [view, setView] = useState<ViewMode>('history');
+  const { historyList, favoriteList, deleteSession, deleteTab, clearAllSessions, toggleFavorite } =
+    useSessionsData();
 
-    useEffect(() => {
-        getHistorySessions(MAX_HISTORY_SESSIONS).then((list) => {
-            setHistory(list);
-        });
-    }, []);
+  // 根据当前视图选择数据
+  const visibleSessions = view === 'history' ? historyList : favoriteList;
+  const sessionCount = visibleSessions.length;
+  const hasSessions = sessionCount > 0;
+  const viewConfig = VIEW_CONFIG[view];
+  const subtitle = hasSessions ? viewConfig.subtitle : viewConfig.emptyDescription;
 
-    const handleDeleteSession = async (sessionId: number | undefined) => {
-        if (!sessionId) return;
-        await deleteHistorySession(sessionId);
-        setHistory((current) => current.filter((session) => session.id !== sessionId));
-    };
+  // 处理视图变更
+  const handleChangeView = useCallback((nextView: ViewMode) => {
+    setView(nextView);
+  }, []);
 
-    const handleDeleteTab = async (sessionId: number | undefined, tabUrl: string) => {
-        if (!sessionId) return;
-        const session = history.find((item) => item.id === sessionId);
-        if (!session) return;
-
-        const nextTabs = session.tabs.filter((tab) => tab.url !== tabUrl);
-        if (!nextTabs.length) {
-            await deleteHistorySession(sessionId);
-            setHistory((current) => current.filter((item) => item.id !== sessionId));
-            return;
-        }
-
-        await updateHistorySessionTabs(sessionId, nextTabs);
-        setHistory((current) =>
-            current.map((item) => (item.id === sessionId ? { ...item, tabs: nextTabs } : item))
-        );
-    };
-
-    const handleClearAll = async () => {
-        await deleteAllHistorySessions();
-        setHistory([]);
-    };
-
-    return (
-        <div className="p-5 min-h-screen">
-            <main className="mx-auto w-full max-w-4xl">
-                <header className={hasHistory ? 'flex justify-between items-end gap-3 mb-5' : 'mb-5'}>
-                    <div>
-                        <h1 className="font-semibold text-slate-900 text-2xl tracking-tight">已关闭的标签页</h1>
-                        <p className="mt-1 text-slate-500 text-sm">{subtitle}</p>
-                    </div>
-                    {hasHistory && (
-                        <div className="flex items-center gap-2">
-                            <span className="bg-white px-3 py-1 border border-slate-200 rounded-full font-medium text-slate-600 text-xs">
-                                共 {history.length} 组
-                            </span>
-                            <button
-                                type="button"
-                                onClick={handleClearAll}
-                                className="bg-white px-2.5 py-1 border border-slate-200 hover:border-red-300 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300 font-medium text-slate-600 hover:text-red-700 text-sm transition"
-                            >
-                                清空全部记录
-                            </button>
-                        </div>
-                    )}
-                </header>
-                {hasHistory ? (
-                    <div className="space-y-4">
-                        {history.map((session, index) => (
-                            <SessionCard
-                                key={`${session.closedAt}-${index}`}
-                                session={session}
-                                onDeleteSession={handleDeleteSession}
-                                onDeleteTab={handleDeleteTab}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <section className="backdrop-blur-[2px] backdrop-saturate-[1.2] px-6 py-10 border border-slate-200/80 rounded-2xl text-center">
-                        <p className="font-medium text-slate-700 text-sm">暂无关闭记录</p>
-                        <p className="mt-1 text-slate-500 text-xs">点击扩展图标后，当前标签页会出现在这里</p>
-                    </section>
-                )}
-            </main>
-        </div>
-    );
+  return (
+    <div className="bg-[radial-gradient(circle_at_12%_8%,rgb(248_250_252)_0%,rgb(226_232_240)_42%),linear-gradient(120deg,rgba(15,23,42,0.06)_0%,transparent_60%)] min-h-screen overflow-x-hidden">
+      <SidebarNav view={view} count={sessionCount} onChange={handleChangeView} />
+      <div className="py-6 pr-5 pl-28">
+        <main className="mx-auto w-full min-w-0 max-w-6xl">
+          <PageHeader
+            title={viewConfig.title}
+            subtitle={subtitle}
+            actions={
+              hasSessions && view === 'history' ? (
+                <div className="flex items-center gap-2">
+                  <span className="badge">共 {sessionCount} 组</span>
+                  <Button variant="danger" onClick={clearAllSessions}>
+                    清空全部记录
+                  </Button>
+                </div>
+              ) : null
+            }
+          />
+          {hasSessions ? (
+            <div className="space-y-4">
+              {visibleSessions.map((session) => (
+                <SessionCard
+                  key={session.id ?? session.closedAt}
+                  session={session}
+                  onDeleteSession={deleteSession}
+                  onDeleteTab={deleteTab}
+                  onToggleFavorite={toggleFavorite}
+                  showActions={view === 'history'}
+                />
+              ))}
+            </div>
+          ) : (
+            <EmptyState title={viewConfig.emptyTitle} description={viewConfig.emptyDescription} />
+          )}
+        </main>
+      </div>
+    </div>
+  );
 }

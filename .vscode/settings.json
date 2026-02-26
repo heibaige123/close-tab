@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
-        "dexie"
+        "dexie",
+        "Fraunces"
     ],
     "chat.useAgentSkills": true,
     "typescript.tsdk": "node_modules/typescript/lib",

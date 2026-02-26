@@ -1,4 +1,4 @@
-import { ClosedTab } from "@/db/historyDb";
+import { ClosedTab } from "@/db";
 
 export function normalizeUrl(url: string) {
     const trimmedUrl = url.trim();

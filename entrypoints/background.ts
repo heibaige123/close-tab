@@ -1,5 +1,5 @@
 import { getTabDomain } from '@/utils/url';
-import { addHistorySession, MAX_HISTORY_SESSIONS, type HistorySession } from '../db/historyDb';
+import { addHistorySession, MAX_HISTORY_SESSIONS, type HistorySession } from '../db';
 
 export default defineBackground(() => {
     // 点击扩展图标：保存当前所有 tab 到本地历史 → 先打开管理页 → 再关闭其余 tab
