@@ -30,8 +30,8 @@ export function SessionCard({
     onDeleteTab,
 }: {
     session: HistorySession;
-    onDeleteSession?: (sessionId: number | undefined) => void;
-    onDeleteTab?: (sessionId: number | undefined, tabUrl: string) => void;
+    onDeleteSession: (sessionId: number | undefined) => void;
+    onDeleteTab: (sessionId: number | undefined, tabUrl: string) => void;
 }) {
     const openAll = () => {
         if (!session.tabs?.length) return;
@@ -41,7 +41,7 @@ export function SessionCard({
     };
 
     const removeSession = () => {
-        onDeleteSession?.(session.id);
+        onDeleteSession(session.id);
     };
 
     const groupedTabs = groupTabsByDomain(session.tabs);
@@ -80,7 +80,7 @@ export function SessionCard({
                                 <ClosedTabItem
                                     key={`${tab.url}-${i}`}
                                     tab={tab}
-                                    onDelete={() => onDeleteTab?.(session.id, tab.url)}
+                                    onDelete={() => onDeleteTab(session.id, tab.url)}
                                 />
                             ))}
                         </ul>

@@ -52,7 +52,7 @@ export default function App() {
     };
 
     return (
-        <div className="p-5 min-h-screen [background:radial-gradient(circle_at_0%_0%,_rgb(239_246_255_/_0.65),_transparent_42%),_radial-gradient(circle_at_100%_100%,_rgb(240_249_255_/_0.7),_transparent_38%),_rgb(248_250_252)]">
+        <div className="p-5 min-h-screen">
             <main className="mx-auto w-full max-w-4xl">
                 <header className={hasHistory ? 'flex justify-between items-end gap-3 mb-5' : 'mb-5'}>
                     <div>
@@ -61,7 +61,7 @@ export default function App() {
                     </div>
                     {hasHistory && (
                         <div className="flex items-center gap-2">
-                            <span className="bg-white/90 shadow-sm px-3 py-1 border border-slate-200 rounded-full font-medium text-slate-600 text-xs">
+                            <span className="bg-white px-3 py-1 border border-slate-200 rounded-full font-medium text-slate-600 text-xs">
                                 共 {history.length} 组
                             </span>
                             <button
