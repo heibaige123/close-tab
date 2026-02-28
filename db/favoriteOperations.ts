@@ -1,5 +1,4 @@
 import { historyDb, type HistorySession } from './database';
-import { removeDuplicateUrlsFromHistory } from './deduplication';
 
 /**
  * 获取所有收藏的会话
@@ -32,23 +31,17 @@ export async function addToFavorite(sessionId: number): Promise<boolean> {
 }
 
 /**
- * 取消收藏（从收藏表移到历史表，需要去重）
+ * 取消收藏（直接删除，不移到历史表）
  * @param sessionId 会话ID
  * @returns 成功返回true
  */
 export async function removeFromFavorite(sessionId: number): Promise<boolean> {
   try {
-    const favoriteSession = await historyDb.favorites.get(sessionId);
-    if (!favoriteSession) {
+    const exists = await historyDb.favorites.get(sessionId);
+    if (!exists) {
       console.error('Session not found in favorites:', sessionId);
       return false;
     }
-
-    // 去重：移除历史表中与此会话URL相同的标签页
-    await removeDuplicateUrlsFromHistory(favoriteSession.tabs.map((tab) => tab.url));
-
-    // 从收藏表移动到历史记录表
-    await historyDb.sessions.add(favoriteSession);
     await historyDb.favorites.delete(sessionId);
     return true;
   } catch (error) {

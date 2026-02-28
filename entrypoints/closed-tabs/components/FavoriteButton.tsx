@@ -1,4 +1,4 @@
-import { memo, useCallback } from 'react';
+import { memo } from 'react';
 
 type FavoriteButtonProps = {
   isFavorite: boolean;
@@ -10,16 +10,12 @@ type FavoriteButtonProps = {
  * 单独管理收藏按钮的样式和交互
  */
 export const FavoriteButton = memo(function FavoriteButton({ isFavorite, onToggle }: FavoriteButtonProps) {
-  const handleClick = useCallback(() => {
-    onToggle();
-  }, [onToggle]);
-
   const buttonClass = isFavorite ? 'favorite-button-active' : 'favorite-button-inactive';
 
   return (
     <button
       type="button"
-      onClick={handleClick}
+      onClick={onToggle}
       aria-pressed={isFavorite}
       className={buttonClass}
       title={isFavorite ? '取消收藏' : '收藏'}

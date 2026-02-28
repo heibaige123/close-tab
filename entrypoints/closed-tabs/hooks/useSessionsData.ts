@@ -13,7 +13,6 @@ import {
 interface UseSessionsDataReturn {
   historyList: HistorySession[];
   favoriteList: HistorySession[];
-  isLoading: boolean;
   
   // Data loading functions
   loadHistory: () => Promise<void>;
@@ -34,33 +33,24 @@ interface UseSessionsDataReturn {
 export function useSessionsData(): UseSessionsDataReturn {
   const [historyList, setHistoryList] = useState<HistorySession[]>([]);
   const [favoriteList, setFavoriteList] = useState<HistorySession[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   // 加载历史记录
   const loadHistory = useCallback(async () => {
     try {
-      setIsLoading(true);
       const list = await getHistorySessions(MAX_HISTORY_SESSIONS);
       setHistoryList(list);
     } catch (error) {
       console.error('Failed to load history:', error);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
   // 加载收藏记录
   const loadFavorites = useCallback(async () => {
     try {
-      setIsLoading(true);
       const list = await getFavoriteSessions();
-      // 添加 favorite: true 标记用于UI显示
-      const favoritesWithFlag = list.map((session) => ({ ...session, favorite: true }));
-      setFavoriteList(favoritesWithFlag);
+      setFavoriteList(list);
     } catch (error) {
       console.error('Failed to load favorites:', error);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
@@ -174,7 +164,6 @@ export function useSessionsData(): UseSessionsDataReturn {
   return {
     historyList,
     favoriteList,
-    isLoading,
     loadHistory,
     loadFavorites,
     reloadAll,

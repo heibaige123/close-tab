@@ -13,8 +13,7 @@ export default defineBackground(() => {
 
         const tabList = targetTabs.map((tab) => ({
             url: tab.url ?? '',
-            title: tab.title ?? tab.url ?? '(无标题)',
-            domain: getTabDomain(tab.url),
+            title: tab.title ?? tab.url ?? '(无标题)'
         }));
 
         const newSession: HistorySession = {

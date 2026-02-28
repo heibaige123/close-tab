@@ -11,6 +11,7 @@ type SessionCardProps = {
   onDeleteSession: (sessionId: number | undefined) => void;
   onDeleteTab: (sessionId: number | undefined, tabUrl: string) => void;
   onToggleFavorite: (sessionId: number | undefined) => void;
+  isFavorite?: boolean;
   showActions?: boolean;
 };
 
@@ -23,13 +24,14 @@ export const SessionCard = memo(function SessionCard({
   onDeleteSession,
   onDeleteTab,
   onToggleFavorite,
+  isFavorite = false,
   showActions = true,
 }: SessionCardProps) {
   const groupedTabs = useMemo(() => groupTabsByDomain(session.tabs), [session.tabs]);
 
   // 打开所有标签页
   const handleOpenAll = useCallback(() => {
-    if (!session.tabs?.length) return;
+    if (!session.tabs.length) return;
     session.tabs.forEach((tab) => {
       if (tab.url) browser.tabs.create({ url: tab.url });
     });
@@ -59,7 +61,7 @@ export const SessionCard = memo(function SessionCard({
         )}
         <p className="flex-1 text-slate-600 text-sm">共 {session.tabs.length} 个标签页</p>
         <span className="text-slate-500 text-xs">{formatTime(session.closedAt)}</span>
-        <FavoriteButton isFavorite={Boolean(session.favorite)} onToggle={handleToggleFavorite} />
+        <FavoriteButton isFavorite={isFavorite} onToggle={handleToggleFavorite} />
       </div>
 
       {/* 标签页列表 */}

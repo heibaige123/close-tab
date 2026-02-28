@@ -56,6 +56,7 @@ export default function App() {
                   onDeleteSession={deleteSession}
                   onDeleteTab={deleteTab}
                   onToggleFavorite={toggleFavorite}
+                  isFavorite={view === 'favorites'}
                   showActions={view === 'history'}
                 />
               ))}

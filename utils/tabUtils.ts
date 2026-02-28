@@ -12,24 +12,21 @@ export interface TabGroup {
  * @returns 分组后的标签页
  */
 export function groupTabsByDomain(tabs: ClosedTab[]): TabGroup[] {
-  const groups = new Map<string, ClosedTab[]>();
+  const groupsMap = new Map<string, ClosedTab[]>();
 
   tabs.forEach((tab) => {
-    const domain = tab.domain || getTabDomain(tab.url);
-    const existing = groups.get(domain);
+    const domain = getTabDomain(tab.url);
+    const existing = groupsMap.get(domain);
     
     if (existing) {
       existing.push(tab);
     } else {
-      groups.set(domain, [tab]);
+      groupsMap.set(domain, [tab]);
     }
   });
 
   // 转换为数组并排序
-  return Array.from(groups, ([domain, items]) => ({ domain, items })).sort((a, b) => {
-    // 未知域名排在最后
-    if (a.domain === '未知域名' && b.domain !== '未知域名') return 1;
-    if (b.domain === '未知域名' && a.domain !== '未知域名') return -1;
+  return Array.from(groupsMap, ([domain, items]) => ({ domain, items })).sort((a, b) => {
     return a.domain.localeCompare(b.domain);
   });
 }
