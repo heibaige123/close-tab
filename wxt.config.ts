@@ -12,5 +12,6 @@ export default defineConfig({
     action: {
       default_popup: ''
     }
-  }
+  },
+  outDir: 'output'
 });
