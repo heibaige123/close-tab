@@ -29,10 +29,10 @@ export default function App() {
   }, []);
 
   return (
-    <div className="bg-[radial-gradient(circle_at_12%_8%,rgb(248_250_252)_0%,rgb(226_232_240)_42%),linear-gradient(120deg,rgba(15,23,42,0.06)_0%,transparent_60%)] min-h-screen overflow-x-hidden">
+    <div className="app-shell">
       <SidebarNav view={view} count={sessionCount} onChange={handleChangeView} />
-      <div className="py-6 pr-5 pl-28">
-        <main className="mx-auto w-full min-w-0 max-w-6xl">
+      <div className="app-content">
+        <main className="main-wrap">
           <PageHeader
             title={viewConfig.title}
             subtitle={subtitle}

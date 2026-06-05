@@ -48,9 +48,9 @@ export const SessionCard = memo(function SessionCard({
   }, [onToggleFavorite, session.id]);
 
   return (
-    <section className="bg-white/95 shadow-sm hover:shadow-md backdrop-blur-[2px] backdrop-saturate-[1.2] p-4 border border-slate-200/80 rounded-2xl transition">
+    <section className="card-shell">
       {/* 标题栏 */}
-      <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-slate-100 border-b">
+      <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-slate-200/70 border-b">
         <Button variant="primary" onClick={handleOpenAll}>
           全部还原
         </Button>
@@ -59,19 +59,19 @@ export const SessionCard = memo(function SessionCard({
             一键删除
           </Button>
         )}
-        <p className="flex-1 text-slate-600 text-sm">共 {session.tabs.length} 个标签页</p>
-        <span className="text-slate-500 text-xs">{formatTime(session.closedAt)}</span>
+        <p className="flex-1 text-label text-slate-600 text-sm">共 {session.tabs.length} 个标签页</p>
+        <span className="text-metric text-slate-500 text-xs">{formatTime(session.closedAt)}</span>
         <FavoriteButton isFavorite={isFavorite} onToggle={handleToggleFavorite} />
       </div>
 
       {/* 标签页列表 */}
       <ul className="space-y-3">
         {groupedTabs.map((group) => (
-          <li key={group.domain} className="bg-slate-50/40 px-3 py-2.5 border border-slate-100 rounded-xl">
+          <li key={group.domain} className="group-shell">
             {/* 域名分组标题 */}
             <div className="flex items-center gap-1.5 mb-1.5 text-slate-700 text-sm">
-              <span className="font-semibold text-slate-900 break-all">{group.domain}</span>
-              <span className="bg-slate-100 px-1.5 py-0.5 rounded-md text-slate-500 text-xs">
+              <span className="font-semibold text-label text-slate-900 break-all">{group.domain}</span>
+              <span className="bg-slate-100 px-1.5 py-0.5 rounded-md text-metric text-slate-500 text-xs">
                 {group.items.length}
               </span>
             </div>
