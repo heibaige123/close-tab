@@ -1,0 +1,51 @@
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-wrap,
+  [data-theme="zaodong"] .card-shell,
+  [data-theme="nuanyun"] .main-wrap,
+  [data-theme="nuanyun"] .card-shell {
+    animation: none;
+  }
+
+  .nav-item,
+  .card-shell,
+  .btn-primary,
+  .btn-danger,
+  .btn-secondary,
+  .favorite-button-active,
+  .favorite-button-inactive,
+  .tab-delete {
+    transition-duration: 0.01ms;
+  }
+
+  .nav-item:hover,
+  .card-shell:hover,
+  .btn-primary:hover,
+  .btn-danger:hover,
+  [data-theme="zaodong"] .btn-primary:hover,
+  [data-theme="zaodong"] .btn-danger:hover,
+  [data-theme="nuanyun"] .btn-primary:hover,
+  [data-theme="nuanyun"] .btn-danger:hover,
+  [data-theme="nuanyun"] .card-shell:hover,
+  [data-theme="zaodong"] .tab-row:hover {
+    transform: none;
+    animation: none;
+  }
+
+  [data-theme="nuanyun"] .app-shell::before,
+  [data-theme="nuanyun"] .nuanyun-scene::before,
+  [data-theme="nuanyun"] .nuanyun-scene::after {
+    animation: none;
+  }
+}

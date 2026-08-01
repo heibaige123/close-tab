@@ -1,0 +1,480 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-ui);
+  --font-mono: var(--font-metric);
+  --radius-card: 0.875rem;
+  --radius-btn: 0.5rem;
+  --radius-pill: 9999px;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    min-height: 100%;
+    background: linear-gradient(165deg, var(--bg-1) 0%, var(--bg-0) 42%, var(--bg-0) 100%);
+    background-attachment: fixed;
+  }
+
+  :root {
+    --body-pad-top: 0.875rem;
+    --body-pad-bottom: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --body-pad-top: 1rem;
+      --body-pad-bottom: 4rem;
+    }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    padding-block: var(--body-pad-top) var(--body-pad-bottom);
+    box-sizing: border-box;
+    color: var(--ink-strong);
+    background: transparent;
+    font-family: var(--font-ui);
+    line-height: 1.45;
+    letter-spacing: -0.008em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-height: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: var(--ink-strong);
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--selection-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .text-ink {
+    color: var(--ink-strong);
+  }
+
+  .text-ink-muted {
+    color: var(--ink-soft);
+  }
+
+  .text-ink-faint {
+    color: var(--ink-faint);
+  }
+
+  .text-accent {
+    color: var(--accent);
+  }
+
+  .border-line {
+    border-color: var(--line-soft);
+  }
+
+  .border-line-strong {
+    border-color: var(--line-strong);
+  }
+
+  .page-title {
+    font-family: var(--font-display);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--ink-strong);
+  }
+
+  .text-metric {
+    font-family: var(--font-metric);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .text-url {
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    letter-spacing: -0.004em;
+  }
+
+  .text-label {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  .app-shell {
+    @apply min-h-full overflow-x-hidden;
+    background: transparent;
+  }
+
+  .app-content {
+    @apply pt-3 pb-6 md:pt-4 md:pb-8 pr-4 md:pr-7 pl-4 md:pl-28;
+  }
+
+  .main-wrap {
+    @apply mx-auto w-full min-w-0 max-w-6xl;
+    animation: enter-up 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .sidebar-shell {
+    @apply left-3 z-10 fixed p-2.5 w-24;
+    top: calc(var(--body-pad-top) + 0.375rem);
+    height: calc(100dvh - var(--body-pad-top) - var(--body-pad-bottom) - 0.75rem);
+    border-radius: var(--radius-card);
+    background: color-mix(in srgb, var(--panel), transparent 35%);
+    border: 1px solid color-mix(in srgb, var(--line-soft), transparent 20%);
+    box-shadow: none;
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.05);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .sidebar-shell {
+      background: var(--panel-strong);
+      backdrop-filter: none;
+    }
+  }
+
+  .theme-switcher {
+    @apply right-4 z-20 fixed flex gap-1 p-1 border;
+    top: calc(var(--body-pad-top) + 0.5rem);
+    border-radius: var(--radius-pill);
+    border-color: var(--line-soft);
+    background: color-mix(in srgb, var(--panel-strong), transparent 10%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.1);
+    box-shadow: 0 8px 24px rgb(var(--shadow-tint) / 0.08);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .theme-switcher {
+      background: var(--panel-strong);
+      backdrop-filter: none;
+    }
+  }
+
+  .theme-option {
+    @apply border px-3 py-1.5 text-xs transition duration-200;
+    border-radius: var(--radius-pill);
+    border-color: transparent;
+    color: var(--ink-soft);
+    background: transparent;
+  }
+
+  .theme-option:hover {
+    background: var(--panel-muted);
+    border-color: var(--line-soft);
+    color: var(--ink-strong);
+  }
+
+  .theme-option-active {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent), transparent 68%);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .nav-item {
+    @apply flex flex-col justify-center items-center border h-20 font-semibold text-xs tracking-wide transition duration-200;
+    border-radius: var(--radius-card);
+    border-color: transparent;
+    color: var(--ink-soft);
+  }
+
+  .nav-item-icon {
+    font-size: 1.125rem;
+    line-height: 1;
+  }
+
+  .nav-item:hover:not(.nav-item-history-active):not(.nav-item-favorites-active) {
+    background: var(--panel-strong);
+    border-color: var(--line-soft);
+    color: var(--ink-strong);
+    transform: translateY(-1px);
+  }
+
+  .nav-item:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .nav-item-history-active {
+    color: var(--nav-active-fg);
+    background: var(--nav-active-bg);
+    border-color: var(--nav-active-border);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--panel-strong), white 35%);
+  }
+
+  .nav-item-history-active:hover {
+    color: var(--nav-active-fg);
+    background: var(--nav-active-hover-bg);
+    border-color: var(--nav-active-border);
+    transform: translateY(-1px);
+  }
+
+  .nav-item-favorites-active {
+    color: var(--nav-fav-active-fg);
+    background: var(--nav-fav-active-bg);
+    border-color: color-mix(in srgb, var(--warn), transparent 72%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--panel-strong), white 35%);
+  }
+
+  .nav-item-favorites-active:hover {
+    color: var(--nav-fav-active-fg);
+    background: linear-gradient(150deg, color-mix(in srgb, var(--warn-soft), white 8%), color-mix(in srgb, var(--warn-soft), var(--warn) 8%));
+    border-color: color-mix(in srgb, var(--warn), transparent 58%);
+    transform: translateY(-1px);
+  }
+
+  .counter-card {
+    @apply mt-auto px-2 py-2.5 border text-[11px] text-center;
+    border-radius: var(--radius-card);
+    background: color-mix(in srgb, var(--panel-strong), transparent 18%);
+    border-color: color-mix(in srgb, var(--line-soft), transparent 25%);
+    color: var(--ink-soft);
+  }
+
+  .card-shell {
+    @apply p-4 md:p-5 border transition duration-200;
+    border-radius: var(--radius-card);
+    background: var(--panel-strong);
+    border-color: var(--line-soft);
+    box-shadow:
+      0 1px 2px rgb(var(--shadow-tint) / 0.04),
+      0 10px 22px rgb(var(--shadow-tint) / 0.06);
+  }
+
+  .card-shell:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 2px 4px rgb(var(--shadow-tint) / 0.05),
+      0 14px 26px rgb(var(--shadow-tint) / 0.09);
+  }
+
+  .group-shell {
+    @apply px-3 py-2.5 border;
+    border-radius: calc(var(--radius-card) - 0.125rem);
+    background: var(--panel-muted);
+    border-color: var(--line-soft);
+  }
+
+  .empty-shell {
+    @apply px-6 py-12 border text-center;
+    border-radius: var(--radius-card);
+    background: var(--panel);
+    border-color: var(--line-soft);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      0 8px 18px rgb(var(--shadow-tint) / 0.05);
+  }
+
+  .btn-primary,
+  .btn-danger,
+  .btn-secondary {
+    @apply relative px-2.5 py-1 border font-medium text-sm;
+    border-radius: var(--radius-btn);
+    transition:
+      transform 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+      background 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .btn-primary:focus-visible,
+  .btn-danger:focus-visible,
+  .btn-secondary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-ring);
+  }
+
+  .btn-danger:focus-visible {
+    box-shadow: 0 0 0 2px var(--danger-ring);
+  }
+
+  .btn-secondary:focus-visible {
+    box-shadow: 0 0 0 2px var(--line-strong);
+  }
+
+  .btn-primary {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--accent-soft), white 42%), var(--accent-soft));
+    border-color: color-mix(in srgb, var(--accent), transparent 68%);
+    color: var(--accent);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.55),
+      0 3px 8px var(--accent-ring);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(180deg, var(--accent-soft), color-mix(in srgb, var(--accent-soft), var(--accent) 12%));
+    border-color: color-mix(in srgb, var(--accent), transparent 52%);
+    color: var(--accent-hover);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.55),
+      0 6px 16px var(--accent-ring);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active,
+  .btn-danger:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .btn-danger {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--danger-soft), white 30%), var(--danger-soft));
+    border-color: color-mix(in srgb, var(--danger), transparent 62%);
+    color: var(--danger);
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.55),
+      0 3px 8px var(--danger-ring);
+  }
+
+  .btn-danger:hover {
+    background: linear-gradient(180deg, var(--danger-soft), color-mix(in srgb, var(--danger-soft), var(--danger) 10%));
+    border-color: color-mix(in srgb, var(--danger), transparent 48%);
+    color: var(--danger-hover, var(--danger));
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.55),
+      0 6px 16px var(--danger-ring);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    background: var(--panel-strong);
+    border-color: var(--line-strong);
+    color: var(--ink-soft);
+  }
+
+  .btn-secondary:hover {
+    background: color-mix(in srgb, var(--panel-strong), var(--bg-1) 28%);
+    color: var(--ink-strong);
+  }
+
+  .btn-secondary:active {
+    transform: scale(0.98);
+  }
+
+  .favorite-button-active {
+    @apply inline-flex justify-center items-center border w-8 h-8 text-xs transition;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--warn-soft), white 22%), var(--warn-soft));
+    border-color: color-mix(in srgb, var(--warn), transparent 70%);
+    color: var(--warn);
+  }
+
+  .favorite-button-active:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--warn), transparent 72%);
+  }
+
+  .favorite-button-inactive {
+    @apply inline-flex justify-center items-center border w-8 h-8 text-xs transition;
+    border-radius: var(--radius-pill);
+    background: var(--panel-strong);
+    border-color: var(--line-soft);
+    color: var(--ink-faint);
+  }
+
+  .favorite-button-inactive:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--line-strong);
+  }
+
+  .favorite-button-inactive:hover {
+    color: var(--warn);
+    border-color: color-mix(in srgb, var(--warn), transparent 72%);
+  }
+
+  .favorite-button-active:active,
+  .favorite-button-inactive:active {
+    transform: scale(0.96);
+  }
+
+  .badge {
+    @apply px-3 py-1 border font-medium text-xs;
+    border-radius: var(--radius-pill);
+    background: color-mix(in srgb, var(--panel-strong), var(--bg-1) 16%);
+    border-color: var(--line-soft);
+    color: var(--ink-soft);
+  }
+
+  .domain-count {
+    @apply px-1.5 py-0.5 text-xs;
+    border-radius: calc(var(--radius-btn) - 0.125rem);
+    background: color-mix(in srgb, var(--panel-strong), var(--bg-1) 22%);
+    color: var(--ink-faint);
+  }
+
+  .tab-row {
+    @apply flex items-start gap-2.5 pr-2 min-w-0 transition;
+    border-radius: calc(var(--radius-btn) + 0.125rem);
+  }
+
+  .tab-row:hover {
+    background: color-mix(in srgb, var(--panel-strong), transparent 18%);
+  }
+
+  .tab-row:hover .tab-title,
+  .tab-row:hover .tab-url {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  .tab-title {
+    @apply block min-w-0 font-medium truncate whitespace-nowrap transition duration-300;
+    color: var(--ink-strong);
+  }
+
+  .tab-url {
+    @apply block min-w-0 truncate transition duration-300;
+    color: var(--ink-faint);
+  }
+
+  .tab-delete {
+    @apply flex-none px-1.5 py-0.5 border border-transparent text-xs transition;
+    border-radius: calc(var(--radius-btn) - 0.125rem);
+    color: var(--ink-faint);
+  }
+
+  .tab-delete:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--danger-ring);
+  }
+
+  .tab-delete:hover {
+    background: var(--danger-soft);
+    border-color: color-mix(in srgb, var(--danger), transparent 72%);
+    color: var(--danger);
+  }
+
+  .tab-delete:active {
+    transform: scale(0.97);
+  }
+}

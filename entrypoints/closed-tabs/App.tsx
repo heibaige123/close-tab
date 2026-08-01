@@ -1,11 +1,14 @@
 import { useCallback, useState } from 'react';
 import { useSessionsData } from './hooks/useSessionsData';
+import { useTheme } from './hooks/useTheme';
 import { VIEW_CONFIG, type ViewMode } from './constants';
 import { EmptyState } from './components/EmptyState';
 import { PageHeader } from './components/PageHeader';
 import { SessionCard } from './components/SessionCard';
 import { SidebarNav } from './components/SidebarNav';
+import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { Button } from './components/Button';
+import { THEMES } from './themes';
 
 /**
  * 主应用组件
@@ -13,6 +16,7 @@ import { Button } from './components/Button';
  */
 export default function App() {
   const [view, setView] = useState<ViewMode>('history');
+  const { theme, setTheme, ready } = useTheme();
   const { historyList, favoriteList, deleteSession, deleteTab, clearAllSessions, toggleFavorite } =
     useSessionsData();
 
@@ -22,14 +26,20 @@ export default function App() {
   const hasSessions = sessionCount > 0;
   const viewConfig = VIEW_CONFIG[view];
   const subtitle = hasSessions ? viewConfig.subtitle : viewConfig.emptyDescription;
+  const themeMeta = THEMES[theme];
+  const footerTip = 'footerTip' in themeMeta ? themeMeta.footerTip : null;
 
   // 处理视图变更
   const handleChangeView = useCallback((nextView: ViewMode) => {
     setView(nextView);
   }, []);
 
+  if (!ready) return null;
+
   return (
     <div className="app-shell">
+      <div className="nuanyun-scene" aria-hidden="true" />
+      <ThemeSwitcher theme={theme} onChange={setTheme} />
       <SidebarNav view={view} count={sessionCount} onChange={handleChangeView} />
       <div className="app-content">
         <main className="main-wrap">
@@ -48,7 +58,7 @@ export default function App() {
             }
           />
           {hasSessions ? (
-            <div className="space-y-4">
+            <div className="space-y-4 session-list">
               {visibleSessions.map((session) => (
                 <SessionCard
                   key={session.id ?? session.closedAt}
@@ -64,6 +74,7 @@ export default function App() {
           ) : (
             <EmptyState title={viewConfig.emptyTitle} description={viewConfig.emptyDescription} />
           )}
+          {footerTip ? <p className="theme-footer-tip">{footerTip}</p> : null}
         </main>
       </div>
     </div>

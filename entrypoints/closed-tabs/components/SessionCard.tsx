@@ -29,7 +29,6 @@ export const SessionCard = memo(function SessionCard({
 }: SessionCardProps) {
   const groupedTabs = useMemo(() => groupTabsByDomain(session.tabs), [session.tabs]);
 
-  // 打开所有标签页
   const handleOpenAll = useCallback(() => {
     if (!session.tabs.length) return;
     session.tabs.forEach((tab) => {
@@ -37,20 +36,17 @@ export const SessionCard = memo(function SessionCard({
     });
   }, [session.tabs]);
 
-  // 删除会话
   const handleRemoveSession = useCallback(() => {
     onDeleteSession(session.id);
   }, [onDeleteSession, session.id]);
 
-  // 切换收藏
   const handleToggleFavorite = useCallback(() => {
     onToggleFavorite(session.id);
   }, [onToggleFavorite, session.id]);
 
   return (
     <section className="card-shell">
-      {/* 标题栏 */}
-      <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-slate-200/70 border-b">
+      <div className="flex flex-wrap items-center gap-2 mb-3 pb-3 border-b border-line">
         <Button variant="primary" onClick={handleOpenAll}>
           全部还原
         </Button>
@@ -59,25 +55,22 @@ export const SessionCard = memo(function SessionCard({
             一键删除
           </Button>
         )}
-        <p className="flex-1 text-label text-slate-600 text-sm">共 {session.tabs.length} 个标签页</p>
-        <span className="text-metric text-slate-500 text-xs">{formatTime(session.closedAt)}</span>
+        <p className="session-tab-count flex-1 text-label text-ink-muted text-sm">
+          共 <span className="session-tab-count-num">{session.tabs.length}</span> 个标签页
+        </p>
+        <span className="text-metric text-ink-faint text-xs">{formatTime(session.closedAt)}</span>
         <FavoriteButton isFavorite={isFavorite} onToggle={handleToggleFavorite} />
       </div>
 
-      {/* 标签页列表 */}
       <ul className="space-y-3">
         {groupedTabs.map((group) => (
           <li key={group.domain} className="group-shell">
-            {/* 域名分组标题 */}
-            <div className="flex items-center gap-1.5 mb-1.5 text-slate-700 text-sm">
-              <span className="font-semibold text-label text-slate-900 break-all">{group.domain}</span>
-              <span className="bg-slate-100 px-1.5 py-0.5 rounded-md text-metric text-slate-500 text-xs">
-                {group.items.length}
-              </span>
+            <div className="flex items-center gap-1.5 mb-1.5 text-ink-muted text-sm">
+              <span className="font-semibold text-label text-ink break-all">{group.domain}</span>
+              <span className="text-metric domain-count">{group.items.length}</span>
             </div>
 
-            {/* 标签页项列表 */}
-            <ul className="space-y-1.5 pl-3.5 border-slate-200 border-l">
+            <ul className="space-y-1.5 pl-3.5 border-l border-line">
               {group.items.map((tab, index) => (
                 <ClosedTabItem
                   key={`${tab.url}-${index}`}

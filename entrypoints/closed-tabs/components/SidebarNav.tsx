@@ -10,7 +10,7 @@ interface SidebarNavProps {
 export function SidebarNav({ view, count, onChange }: SidebarNavProps) {
   return (
     <aside className="sidebar-shell">
-      <div className="flex flex-col items-stretch gap-2 h-full">
+      <nav className="flex flex-col items-stretch gap-2 h-full" aria-label="主导航">
         {VIEW_ORDER.map((key) => {
           const item = VIEW_CONFIG[key];
           const isActive = view === key;
@@ -24,17 +24,18 @@ export function SidebarNav({ view, count, onChange }: SidebarNavProps) {
               type="button"
               onClick={() => onChange(key)}
               className={`nav-item ${isActive ? activeStyles : ''}`}
+              aria-current={isActive ? 'page' : undefined}
             >
-              <span className="text-lg">{item.icon}</span>
+              <span className="nav-item-icon">{item.icon}</span>
               <span className="mt-1 text-label">{item.label}</span>
             </button>
           );
         })}
         <div className="counter-card">
           <span className="text-label">{VIEW_CONFIG[view].label}</span>
-          <div className="mt-1 font-semibold text-metric text-slate-900 text-base">{count}</div>
+          <div className="mt-1 font-semibold text-metric text-ink text-base">{count}</div>
         </div>
-      </div>
+      </nav>
     </aside>
   );
 }
